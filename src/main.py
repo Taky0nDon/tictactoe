@@ -1,3 +1,4 @@
+from random import choice
 class BoardState:
     def __init__(self):
         self.top_row: list[str]    = [" ", " ", " "]
@@ -35,7 +36,9 @@ class BoardState:
         else:
             return True
 
-    def game_is_over(self) -> bool:
+    def game_is_over(self, is_over=None) -> bool:
+        if is_over:
+            return True
         state = self.get_board_state()
         rows = state.values()
         for row in rows:
@@ -54,14 +57,32 @@ class BoardState:
         return False
 
 class Player:
-    def __init__(self, symbol:str):
+    def __init__(self, symbol:str, cpu=False):
         self.symbol = symbol
+        self.is_cpu = cpu
 
-    def take_turn(self) -> str:
-        position = input("Enter the coordinates for you next move: ")
+    def take_turn(self, position) -> str:
         return position
 
 
+class CPUOpponent(Player):
+    def __init__(self, symbol):
+        self.is_cpu = True
+        self.symbol = symbol
+        self.open_positions: list[str] = [
+                "A1",
+                "A2",
+                "A3",
+                "B1",
+                "B2",
+                "B3",
+                "C1",
+                "C2",
+                "C3",
+                ]
+    def get_next_move_coordinates(self):
+        possible_moves = self.positions
+        return choice(possible_moves)
 
 
 
