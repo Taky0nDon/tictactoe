@@ -40,21 +40,41 @@ class BoardState:
         if is_over:
             return True
         state = self.get_board_state()
-        rows = state.values()
+        rows = [row for row in state.values()]
+        diagonals = [
+                [
+                    rows[0][0],
+                    rows[1][1],
+                    rows[2][2]
+                 ],
+                [
+                    rows[0][2],
+                    rows[1][1],
+                    rows[2][0]
+                    ]
+                ]
+        
         for row in rows:
             row_is_won = (len(set(row)) == 1)
             row_is_empty = any([column != " " for column in row])
             if row_is_empty and row_is_won:
                 return True
+
         for i in range(0, 3):
             column = [row[i] for row in rows]
             column_is_empty = all([e == " " for e in column])
             column_is_won = len(set(column)) == 1
             if  column_is_won and not column_is_empty:
-                print(rows)
-                print(column)
                 return True
+
+        for diag in diagonals:
+            diag_is_empty = all([e == " " for e in diag])
+            diag_is_won = len(set(diag)) == 1
+            if not diag_is_empty and diag_is_won:
+                return True
+
         return False
+
 
 class Player:
     def __init__(self, symbol:str, cpu=False):
