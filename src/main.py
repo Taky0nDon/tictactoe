@@ -41,6 +41,14 @@ class BoardState:
             "C": self.bottom_row,
         }
 
+    def get_rows(self) -> list[list[str]]:
+        return list(self.POSITION_HASH.values())
+
+    def get_columns(self) -> list[list[str]]:
+        rows = self.get_rows()
+        return [[row[i] for i in range(0,3)] for row in rows]
+
+
     def get_board_state(self) -> dict[str, list[str]]:
         """Return the dictionary containing up to date board status (position of places X and Os)"""
         return self.POSITION_HASH
