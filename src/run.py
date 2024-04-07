@@ -15,6 +15,7 @@ other_player = cpu_player
 draw = False
 
 while not game_state.game_is_over():
+    print(f'{game_state.get_columns()=}')
     print(f'{game_state.POSITION_HASH.values()=}')
     print(f'{other_player.symbol=}')
     if current_player.is_cpu == False:
