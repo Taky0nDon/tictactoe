@@ -1,10 +1,38 @@
-from random import choice
+PLAYER_SYMBOLS = ["o", "x"]
+
 class BoardState:
+    """
+    Keeps track of the current state of the board (position of X's and O's).
+    @param top_row: Holds values in the top row. list[str]
+    @param middle_row: Holds values in the middle row. list[str]
+    @param bottom_row: Holds values in the bottom row. list[str]
+    * open_positions: a list of the coordinates that have not yet been played
+    * POSITION_HASH: a dictionary that holds the current state of each row,
+        assigned to string 'A', 'B', 'C'.
+
+    Methods:
+        get_board_state: returns updated POSITION_HASH
+        update_board_state: updates the POSITION_HASH with latest move
+        move_is_valid: checks that a given coordinate does not:
+            1) exist beyond the boundaries of the board
+            2) already have a piece in it
+        game_is_over: checks for win conditions and draws
+    """
     def __init__(self):
         self.top_row: list[str]    = [" ", " ", " "]
         self.middle_row: list[str] = [" ", " ", " "]
         self.bottom_row: list[str] = [" ", " ", " "]
-
+        self.open_positions: list[str] = [
+                "A1",
+                "A2",
+                "A3",
+                "B1",
+                "B2",
+                "B3",
+                "C1",
+                "C2",
+                "C3",
+                ]
         self.POSITION_HASH: dict[str, list[str]] = {
             "A": self.top_row,
             "B": self.middle_row,
@@ -26,6 +54,22 @@ class BoardState:
         column: int = int(position[1]) - 1
         self.POSITION_HASH[row][column] = player
 
+    def get_populated_rows(self):
+        """
+        Checks for rows that are almost-wins (2 instances of same symbol and open space)
+        """
+        for label, row in self.POSITION_HASH.items():
+            if row.count(" ") > 1:
+                continue
+            row_counts = {}
+            for space in row:
+                if space not in row_counts.keys():
+                    row_counts[space] = 1
+                else:
+                    row_counts[space] += 1
+            if " " in row_counts.keys() and 2 in row_counts.values():
+                return label + str(row.index(" ") + 1)
+
     def move_is_valid(self, position: str) -> bool:
         row: str = position[0].upper()
         column: int = int(position[1]) - 1
@@ -36,8 +80,14 @@ class BoardState:
         else:
             return True
 
+    def game_almost_won(self):
+        state = self.POSITION_HASH
+        for row in state.values():
+
     def game_is_over(self, is_over=None) -> bool:
         if is_over:
+            return True
+        if len(self.open_positions) < 1:
             return True
         state = self.get_board_state()
         rows = [row for row in state.values()]
@@ -76,36 +126,6 @@ class BoardState:
         return False
 
 
-class Player:
-    def __init__(self, symbol:str, cpu=False):
-        self.symbol = symbol
-        self.is_cpu = cpu
-
-    def take_turn(self, position) -> str:
-        return position
-
-
-class CPUOpponent(Player):
-    def __init__(self, symbol):
-        self.is_cpu = True
-        self.symbol = symbol
-        self.open_positions: list[str] = [
-                "A1",
-                "A2",
-                "A3",
-                "B1",
-                "B2",
-                "B3",
-                "C1",
-                "C2",
-                "C3",
-                ]
-    def get_next_move_coordinates(self):
-        possible_moves = self.positions
-        return choice(possible_moves)
-
-
-
 class BoardMaker:
     def get_current_state(self, board_state: BoardState):
         self.current_state = board_state
@@ -128,3 +148,5 @@ class BoardMaker:
         current_board = self.get_current_state(updated_board)
         for current_row in current_board:
             print(current_row)
+
+
