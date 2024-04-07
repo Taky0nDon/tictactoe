@@ -45,8 +45,14 @@ class BoardState:
         return list(self.POSITION_HASH.values())
 
     def get_columns(self) -> list[list[str]]:
+        columns = []
         rows = self.get_rows()
-        return [[row[i] for i in range(0,3)] for row in rows]
+        for col_num in range(3):
+            column = []
+            for row_index in range(3):
+                column.append(rows[row_index][col_num])
+            columns.append(column)
+        return columns
 
 
     def get_board_state(self) -> dict[str, list[str]]:
