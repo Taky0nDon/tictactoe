@@ -1,5 +1,6 @@
 PLAYER_SYMBOLS = ["o", "x"]
 
+
 class BoardState:
     """
     Keeps track of the current state of the board (position of X's and O's).
@@ -18,37 +19,38 @@ class BoardState:
             2) already have a piece in it
         game_is_over: checks for win conditions and draws
     """
+
     def __init__(self):
-        self.top_row: list[str]    = [" ", " ", " "]
+        self.top_row: list[str] = [" ", " ", " "]
         self.middle_row: list[str] = [" ", " ", " "]
         self.bottom_row: list[str] = [" ", " ", " "]
         self.open_positions: list[str] = [
-                "A1",
-                "A2",
-                "A3",
-                "B1",
-                "B2",
-                "B3",
-                "C1",
-                "C2",
-                "C3",
-                ]
+            "A1",
+            "A2",
+            "A3",
+            "B1",
+            "B2",
+            "B3",
+            "C1",
+            "C2",
+            "C3",
+        ]
         self.POSITION_HASH: dict[str, list[str]] = {
             "A": self.top_row,
             "B": self.middle_row,
-            "C": self.bottom_row
-                    }
+            "C": self.bottom_row,
+        }
 
     def get_board_state(self) -> dict[str, list[str]]:
-        """ Return the dictionary containing up to date board status (position of places X and Os) """
+        """Return the dictionary containing up to date board status (position of places X and Os)"""
         return self.POSITION_HASH
 
     def update_board_state(self, position: str, player: str) -> None:
         """
-    @param position: The position to change, in the form of A1, where the first character is A, B
-    or C, and the second character is 1, 2, or 3. The first character represents the row to alter, and the second character the column.
-    for Example, a position of "A1" will add an X or an O to the upper-left space.
-    @param player: The symbol to place on the board (X or O)
+        @param position: The position to change, in the form of A1, where the first character is A, B
+        or C, and the second character is 1, 2, or 3. The first character represents the row to alter, and the second character the column.
+        for Example, a position of "A1" will add an X or an O to the upper-left space.
+        @param player: The symbol to place on the board (X or O)
         """
         row: str = position[0].upper()
         column: int = int(position[1]) - 1
@@ -73,16 +75,32 @@ class BoardState:
     def move_is_valid(self, position: str) -> bool:
         row: str = position[0].upper()
         column: int = int(position[1]) - 1
-        if self.POSITION_HASH[row][column] != " "\
-        or row not in "ABC"\
-        or column not in range(0, 3):
+        if (
+            self.POSITION_HASH[row][column] != " "
+            or row not in "ABC"
+            or column not in range(0, 3)
+        ):
             return False
         else:
             return True
 
     def game_almost_won(self):
         state = self.POSITION_HASH
+
+        for i in range(0, 3):
+            column = [row[i] for row in state]
+            col_char_count = {char: column.count(char) for char in column}
+            if column.count(" ") != 1:
+                continue
+            elif any([count == 2 for count in col_char_count]):
+                return True
+
         for row in state.values():
+            row_char_count = {char: row.count(char) for char in row}
+            if row.count(" ") != 1:
+                continue
+            elif any([count == 2 for count in row_char_count]):
+                return True
 
     def game_is_over(self, is_over=None) -> bool:
         if is_over:
@@ -92,20 +110,12 @@ class BoardState:
         state = self.get_board_state()
         rows = [row for row in state.values()]
         diagonals = [
-                [
-                    rows[0][0],
-                    rows[1][1],
-                    rows[2][2]
-                 ],
-                [
-                    rows[0][2],
-                    rows[1][1],
-                    rows[2][0]
-                    ]
-                ]
-        
+            [rows[0][0], rows[1][1], rows[2][2]],
+            [rows[0][2], rows[1][1], rows[2][0]],
+        ]
+
         for row in rows:
-            row_is_won = (len(set(row)) == 1)
+            row_is_won = len(set(row)) == 1
             row_is_empty = any([column != " " for column in row])
             if row_is_empty and row_is_won:
                 return True
@@ -114,7 +124,7 @@ class BoardState:
             column = [row[i] for row in rows]
             column_is_empty = all([e == " " for e in column])
             column_is_won = len(set(column)) == 1
-            if  column_is_won and not column_is_empty:
+            if column_is_won and not column_is_empty:
                 return True
 
         for diag in diagonals:
@@ -134,19 +144,16 @@ class BoardMaker:
         bottom_row = board_state.bottom_row
 
         self.board_rows: list[str] = [
-              f" {top_row[0]}|{top_row[1]} |{top_row[2]} ",
-              f"__|__|__",
-              f" {middle_row[0]}|{middle_row[1]} |{middle_row[2]} ",
-              f"__|__|__",
-              f" {bottom_row[0]}|{bottom_row[1]} |{bottom_row[2]} ",
-              f"  |  |  "
-              ]
+            f" {top_row[0]}|{top_row[1]} |{top_row[2]} ",
+            f"__|__|__",
+            f" {middle_row[0]}|{middle_row[1]} |{middle_row[2]} ",
+            f"__|__|__",
+            f" {bottom_row[0]}|{bottom_row[1]} |{bottom_row[2]} ",
+            f"  |  |  ",
+        ]
         return self.board_rows
-
 
     def make_board(self, updated_board):
         current_board = self.get_current_state(updated_board)
         for current_row in current_board:
             print(current_row)
-
-
