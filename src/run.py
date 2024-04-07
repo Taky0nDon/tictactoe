@@ -13,8 +13,9 @@ cpu_player = CPUOpponent(PLAYER_SYMBOLS.pop(0))
 current_player = player
 other_player = cpu_player
 draw = False
-
-while not game_state.game_is_over():
+print(len(game_state.open_positions))
+while not game_state.game_is_won() and not game_state.game_is_draw():
+    print(f'{game_state.game_is_won()=}, {game_state.game_is_draw()=}')
     print(f'{game_state.get_columns()=}')
     print(f'{game_state.POSITION_HASH.values()=}')
     print(f'{other_player.symbol=}')
@@ -35,10 +36,9 @@ while not game_state.game_is_over():
     print(f'{move=}')
     game_state.update_board_state(position=move, player=current_player.symbol)
     game_state.open_positions.remove(move.upper())
-    # system("clear")
-    if len(game_state.open_positions) < 1 and not game_state.game_is_over():
-        draw = True
-    if not game_state.game_is_over():
+    system("clear")
+    draw = game_state.game_is_draw()
+    if not game_state.game_is_won() and not draw:
         current_player, other_player = other_player, current_player
 
 
