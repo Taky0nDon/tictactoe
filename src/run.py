@@ -36,10 +36,10 @@ while not game_state.game_is_over():
     game_state.update_board_state(position=move, player=current_player.symbol)
     game_state.open_positions.remove(move.upper())
     # system("clear")
+    if len(game_state.open_positions) < 1 and not game_state.game_is_over():
+        draw = True
     if not game_state.game_is_over():
         current_player, other_player = other_player, current_player
-    if len(game_state.open_positions) < 1:
-        draw = True
 
 
 BoardMaker.make_board(game_state)
