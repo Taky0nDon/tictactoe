@@ -17,7 +17,7 @@ class BoardState:
         move_is_valid: checks that a given coordinate does not:
             1) exist beyond the boundaries of the board
             2) already have a piece in it
-        game_is_over: checks for win conditions and draws
+        game_is_won: checks for win conditions and draws
     """
 
     def __init__(self):
@@ -116,9 +116,7 @@ class BoardState:
             elif any([count == 2 for count in row_char_count]):
                 return True
 
-    def game_is_over(self, is_over=None) -> bool:
-        if is_over:
-            return True
+    def game_is_won(self) -> bool:
         state = self.get_board_state()
         rows = [row for row in state.values()]
         diagonals = [
@@ -128,8 +126,8 @@ class BoardState:
 
         for row in rows:
             row_is_won = len(set(row)) == 1
-            row_is_empty = any([column != " " for column in row])
-            if row_is_empty and row_is_won:
+            row_is_empty = all([position == " " for position in row])
+            if not row_is_empty and row_is_won:
                 return True
 
         for i in range(0, 3):
@@ -146,6 +144,12 @@ class BoardState:
                 return True
 
         return False
+
+    def game_is_draw(self) -> bool:
+        if len(self.open_positions) < 1 and not self.game_is_won():
+            return True
+        else:
+            return False
 
 
 class BoardMaker:
