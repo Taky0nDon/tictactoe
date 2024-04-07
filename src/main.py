@@ -119,8 +119,6 @@ class BoardState:
     def game_is_over(self, is_over=None) -> bool:
         if is_over:
             return True
-        if len(self.open_positions) < 1:
-            return True
         state = self.get_board_state()
         rows = [row for row in state.values()]
         diagonals = [
