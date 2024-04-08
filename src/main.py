@@ -42,9 +42,11 @@ class BoardState:
         }
 
     def get_rows(self) -> list[list[str]]:
+        """ Return a 2D list containing the rows of the board """
         return list(self.POSITION_HASH.values())
 
     def get_columns(self) -> list[list[str]]:
+        """ Return a 2D list containing the columns of the board """
         columns = []
         rows = self.get_rows()
         for col_num in range(3):
@@ -54,6 +56,11 @@ class BoardState:
             columns.append(column)
         return columns
 
+    def get_diagonals(self) -> list[list[str]]:
+        rows = self.get_rows()
+        left_to_right = [rows[0][0], rows[1][1], rows[2][2]]
+        right_to_left = [rows[0][2], rows[1][1], rows[2][0]]
+        return [left_to_right, left_to_right]
 
     def get_board_state(self) -> dict[str, list[str]]:
         """Return the dictionary containing up to date board status (position of places X and Os)"""
@@ -117,8 +124,8 @@ class BoardState:
                 return True
 
     def game_is_won(self) -> bool:
-        state = self.get_board_state()
-        rows = [row for row in state.values()]
+        rows = self.get_rows()
+        columns = self.get_columns()
         diagonals = [
             [rows[0][0], rows[1][1], rows[2][2]],
             [rows[0][2], rows[1][1], rows[2][0]],
@@ -130,8 +137,7 @@ class BoardState:
             if not row_is_empty and row_is_won:
                 return True
 
-        for i in range(0, 3):
-            column = [row[i] for row in rows]
+        for column in columns:
             column_is_empty = all([e == " " for e in column])
             column_is_won = len(set(column)) == 1
             if column_is_won and not column_is_empty:
