@@ -77,22 +77,6 @@ class BoardState:
         column: int = int(position[1]) - 1
         self.POSITION_HASH[row][column] = player
 
-    def get_populated_rows(self):
-        """
-        Checks for rows that are almost-wins (2 instances of same symbol and open space)
-        """
-        for label, row in self.POSITION_HASH.items():
-            if row.count(" ") > 1:
-                continue
-            row_counts = {}
-            for space in row:
-                if space not in row_counts.keys():
-                    row_counts[space] = 1
-                else:
-                    row_counts[space] += 1
-            if " " in row_counts.keys() and 2 in row_counts.values():
-                return label + str(row.index(" ") + 1)
-
     def move_is_valid(self, position: str) -> bool:
         row: str = position[0].upper()
         column: int = int(position[1]) - 1
@@ -126,10 +110,7 @@ class BoardState:
     def game_is_won(self) -> bool:
         rows = self.get_rows()
         columns = self.get_columns()
-        diagonals = [
-            [rows[0][0], rows[1][1], rows[2][2]],
-            [rows[0][2], rows[1][1], rows[2][0]],
-        ]
+        diagonals = self.get_diagonals()
 
         for row in rows:
             row_is_won = len(set(row)) == 1
