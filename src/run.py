@@ -36,7 +36,7 @@ while not game_state.game_is_won() and not game_state.game_is_draw():
     print(f'{move=}')
     game_state.update_board_state(position=move, player=current_player.symbol)
     game_state.open_positions.remove(move.upper())
-    system("clear")
+#    system("clear")
     draw = game_state.game_is_draw()
     if not game_state.game_is_won() and not draw:
         current_player, other_player = other_player, current_player
