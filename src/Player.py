@@ -16,8 +16,15 @@ class CPUOpponent(Player):
 
     def cpu_turn(self):
         pass
+    
+    def block_column_win(self, board_state: BoardState):
+        columns = board_state.get_columns()
+        col_label_dict = {label: col for label, col in zip("XYZ", columns)}
+        col_counts = [{char:col.count(char) for char in col} for col in columns]
+        if any([any([count > 1 for count in col_count.values()] for col_count in col_counts)]):
+            print("Column almost win detected")
 
-    def block_win(self, board_state: BoardState):
+    def block_row_win(self, board_state: BoardState):
         for label, row in board_state.POSITION_HASH.items():
             if row.count(" ") > 1:
                 continue
@@ -28,6 +35,7 @@ class CPUOpponent(Player):
                 else:
                     row_counts[space] += 1
             if " " in row_counts.keys() and 2 in row_counts.values():
+                print("row almost win detected")
                 return label + str(row.index(" ") + 1)
 
 
