@@ -58,9 +58,9 @@ class BoardState:
 
     def get_diagonals(self) -> list[list[str]]:
         rows = self.get_rows()
-        left_to_right = [rows[0][0], rows[1][1], rows[2][2]]
-        right_to_left = [rows[0][2], rows[1][1], rows[2][0]]
-        return [left_to_right, left_to_right]
+        return [[rows[i][i] for i in range(3)],
+                [rows[i][2 - i] for i in range(3)]
+                ]
 
     def get_board_state(self) -> dict[str, list[str]]:
         """Return the dictionary containing up to date board status (position of places X and Os)"""
