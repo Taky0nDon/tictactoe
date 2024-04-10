@@ -1,6 +1,7 @@
 PLAYER_SYMBOLS = ["o", "x"]
 
 
+# TODO: Separate game logic and board state?
 class BoardState:
     """
     Keeps track of the current state of the board (position of X's and O's).
@@ -57,10 +58,14 @@ class BoardState:
         return columns
 
     def get_diagonals(self) -> list[list[str]]:
+        """ A 2D list showing the contents of the boards two diagonals. """
         rows = self.get_rows()
-        return [[rows[i][i] for i in range(3)],
-                [rows[i][2 - i] for i in range(3)]
+        diags = [
+                    [rows[i][i] for i in range(3)],
+                    [rows[i][2 - i] for i in range(3)]
                 ]
+        print(diags)
+        return diags
 
     def get_board_state(self) -> dict[str, list[str]]:
         """Return the dictionary containing up to date board status (position of places X and Os)"""
@@ -86,8 +91,7 @@ class BoardState:
             or column not in range(0, 3)
         ):
             return False
-        else:
-            return True
+        return True
 
     def game_almost_won(self):
         state = self.POSITION_HASH
