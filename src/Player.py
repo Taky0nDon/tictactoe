@@ -40,7 +40,7 @@ class CPUOpponent(Player):
                         ) 
                 }
         
-        opp_symbol = [symbol if symbol != self.symbol for symbol in PLAYER_SYMBOLS] 
+        opp_symbol = [symbol for symbol in PLAYER_SYMBOLS if symbol != self.symbol] 
         for diag in diags:
             current_diag = diags[diag]
             if current_diag.count(" ") != 1:
@@ -52,7 +52,8 @@ class CPUOpponent(Player):
                 blocking_move = open_row + desired_col
                 return blocking_move
 
-    def get_diag_win(self, board_state: BoardState)
+    def get_diag_win(self, board_state: BoardState):
+        pass
         if current_diag.count(self.symbol) == 2:
             return 
 
