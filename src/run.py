@@ -7,9 +7,9 @@ from Player import Player, CPUOpponent
 
 BoardMaker = BoardMaker()
 game_state = BoardState()
-
-player = Player(PLAYER_SYMBOLS.pop(randint(0,1)))
-cpu_player = CPUOpponent(PLAYER_SYMBOLS.pop(0))
+symbols = PLAYER_SYMBOLS.copy()
+player = Player(symbols.pop(randint(0,1)))
+cpu_player = CPUOpponent(symbols.pop(0))
 current_player = player
 other_player = cpu_player
 DRAW = False
