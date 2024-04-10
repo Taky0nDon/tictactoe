@@ -9,7 +9,6 @@ class Player:
     def take_turn(self, position) -> str:
         return position
 
-
 class CPUOpponent(Player):
     def __init__(self, symbol):
         self.is_cpu = True
@@ -32,15 +31,14 @@ class CPUOpponent(Player):
                 return label + str(row.index(" ") + 1)
 
     def block_diagonal_win(self, board_state: BoardState):
+        print(f"{self.symbol=}")
+        print(f"{PLAYER_SYMBOLS=}")
         diags = {
                 label: diag for label, diag in zip\
-                        (
-                            ("ABC", "CBA"),
-                            board_state.get_diagonals()
-                        ) 
+                        (("ABC", "CBA"), board_state.get_diagonals()) 
                 }
         
-        opp_symbol = [symbol for symbol in PLAYER_SYMBOLS if symbol != self.symbol] 
+        opp_symbol = [symbol for symbol in PLAYER_SYMBOLS if symbol != self.symbol][0]
         for diag in diags:
             current_diag = diags[diag]
             if current_diag.count(" ") != 1:
@@ -53,7 +51,6 @@ class CPUOpponent(Player):
                 return blocking_move
 
     def get_diag_win(self, board_state: BoardState):
-        pass
         if current_diag.count(self.symbol) == 2:
             return 
 
