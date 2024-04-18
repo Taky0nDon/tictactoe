@@ -16,6 +16,7 @@ class CPUOpponent(Player):
         self.symbol = symbol
 
     def block_column_win(self, board_state: BoardState):
+<<<<<<< HEAD
         opponent = PLAYER_SYMBOLS.copy().remove(self.symbol)[0]
         columns = board_state.get_columns()
         print("**")
@@ -27,6 +28,22 @@ class CPUOpponent(Player):
                 print(f"{column_number=}")
                 move = row + str(column_number)
                 print(move)
+=======
+        opponent = [s for s in PLAYER_SYMBOLS if s != self.symbol][0]
+        print(f"{opponent=}")
+        columns = board_state.get_columns()
+        col_map = { "1": columns[0],
+                   "2": columns[1],
+                   "3": columns[2]
+                   }
+        for col_nbr, col in col_map.items():
+            if col.count(' ') + col.count(opponent) == 3:
+                print(f"Column {col_nbr} almost win detected")
+                row = chr(65 + col.index(' '))
+                column = col_nbr
+                move = row + str(column)
+                print(f"{move=}")
+>>>>>>> was-working
                 return move
 
 

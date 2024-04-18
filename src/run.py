@@ -54,6 +54,16 @@ while not game_state.game_is_won() and not game_state.game_is_draw():
         if not game_state.move_is_valid(move):
             print("Sorry, that move is not valid.")
             continue
+<<<<<<< HEAD
+=======
+    elif diag_almost_won:
+        move = current_player.block_diagonal_win(game_state)
+    elif row_almost_won:
+        move = current_player.block_row_win(game_state)
+    elif column_almost_won:
+        print("column almost won")
+        move = current_player.block_column_win(game_state)
+>>>>>>> was-working
     else:
         current_player = cpu_player
         other_player = player
