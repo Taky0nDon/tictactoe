@@ -37,9 +37,7 @@ class BoardState:
             "C3",
         ]
         self.POSITION_HASH: dict[str, list[str]] = {
-            "A": self.top_row,
-            "B": self.middle_row,
-            "C": self.bottom_row,
+                char : row for char, row in zip("ABC", self.get_rows())
         }
 
     def get_rows(self) -> list[list[str]]:
