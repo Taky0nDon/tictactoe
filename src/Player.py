@@ -15,11 +15,22 @@ class CPUOpponent(Player):
         self.symbol = symbol
 
     def block_column_win(self, board_state: BoardState):
+        opponent = [s for s in PLAYER_SYMBOLS if s != self.symbol][0]
+        print(f"{opponent=}")
         columns = board_state.get_columns()
-        col_counts = [{char:col.count(char) for char in col} for col in columns]
-        if any(count > 1 for count in col_count.values() for col_count in col_counts):
-            breakpoint()
-            print("Column almost win detected")
+        col_map = { "1": columns[0],
+                   "2": columns[1],
+                   "3": columns[2]
+                   }
+        for col_nbr, col in col_map.items():
+            if col.count(' ') + col.count(opponent) == 3:
+                print(f"Column {col_nbr} almost win detected")
+                row = chr(65 + col.index(' '))
+                column = col_nbr
+                move = row + str(column)
+                print(f"{move=}")
+                return move
+
 
     def block_row_win(self, board_state: BoardState):
         for label, row in zip('ABC', board_state.get_rows()):

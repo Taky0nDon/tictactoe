@@ -35,7 +35,7 @@ while not game_state.game_is_won() and not game_state.game_is_draw():
         move = current_player.block_row_win(game_state)
     elif column_almost_won:
         print("column almost won")
-        move = choice(game_state.open_positions)
+        move = current_player.block_column_win(game_state)
     else:
         move = choice(game_state.open_positions)
     game_state.update_board_state(position=move, player=current_player.symbol)
