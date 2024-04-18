@@ -9,17 +9,26 @@ class Player:
     def take_turn(self, position) -> str:
         return position
 
+
 class CPUOpponent(Player):
     def __init__(self, symbol):
         self.is_cpu = True
         self.symbol = symbol
 
     def block_column_win(self, board_state: BoardState):
+        opponent = PLAYER_SYMBOLS.copy().remove(self.symbol)[0]
         columns = board_state.get_columns()
-        col_counts = [{char:col.count(char) for char in col} for col in columns]
-        if any(count > 1 for count in col_count.values() for col_count in col_counts):
-            breakpoint()
-            print("Column almost win detected")
+        print("**")
+        print(columns)
+        print("**")
+        for column_number, col in enumerate(columns):
+            if col.count(" ") + col.count(opponent) == 3:
+                row = chr(67 - col.index(" "))
+                print(f"{column_number=}")
+                move = row + str(column_number)
+                print(move)
+                return move
+
 
     def block_row_win(self, board_state: BoardState):
         for label, row in zip('ABC', board_state.get_rows()):
