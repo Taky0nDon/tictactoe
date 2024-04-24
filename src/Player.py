@@ -25,14 +25,10 @@ class CPUOpponent(Player):
     def block_column_win(self, board_state: BoardState):
         opponent = [s for s in PLAYER_SYMBOLS if s != self.symbol][0]
         columns = board_state.get_columns()
-        col_map = { "1": columns[0],
-                   "2": columns[1],
-                   "3": columns[2]
-                   }
-        for col_nbr, col in col_map.items():
+        for col in columns:
             if col.count(' ') + col.count(opponent) == 3:
                 row = chr(65 + col.index(' '))
-                column = col_nbr
+                column = columns.index(col) + 1
                 move = row + str(column)
                 return move
 
@@ -68,6 +64,12 @@ class CPUOpponent(Player):
 
     def get_col_win(self, board_state: BoardState):
         columns = board_state.get_columns()
+        for col in columns:
+            if col.count(' ') + col.count(self.symbol) == 3:
+                row = chr(65 + col.index(' '))
+                column = columns.index(col) + 1
+                move = row + str(column)
+                return move
 
 
     def get_row_win(self, board_state: BoardState):
