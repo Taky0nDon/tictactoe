@@ -64,14 +64,14 @@ class BoardState:
                     [rows[i][i] for i in range(3)],
                     [rows[i][2 - i] for i in range(3)]
                 ]
-        print(diags)
         return diags
 
     def get_board_state(self) -> dict[str, list[str]]:
         """Return the dictionary containing up to date board status (position of places X and Os)"""
         return self.POSITION_HASH
 
-    def update_board_state(self, position: str, player: str) -> None:
+    def update_board_state(self, position: str, player) -> None:
+
         """
         @param position: The position to change, in the form of A1, where the first character is A, B
         or C, and the second character is 1, 2, or 3. The first character represents the row to alter, and the second character the column.
@@ -80,7 +80,7 @@ class BoardState:
         """
         row: str = position[0].upper()
         column: int = int(position[1]) - 1
-        self.POSITION_HASH[row][column] = player
+        self.POSITION_HASH[row][column] = player.symbol
 
     def move_is_valid(self, position: str) -> bool:
         row: str = position[0].upper()
