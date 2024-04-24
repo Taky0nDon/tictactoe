@@ -40,6 +40,8 @@ class CPUOpponent(Player):
     def block_row_win(self, board_state: BoardState):
         for label, row in zip('ABC', board_state.get_rows()):
             row_counts = { char:row.count(char) for char in row}
+            if " " not in row_counts.keys():
+                continue
             if row_counts[' '] == 1 and 2 in row_counts.values():
                 print("row almost win detected")
                 move = label + str(row.index(" ") + 1)
@@ -64,9 +66,38 @@ class CPUOpponent(Player):
                 blocking_move = open_row + desired_col
                 return blocking_move
 
+    def get_col_win(self, board_state: BoardState):
+        columns = board_state.get_columns()
+
+
+    def get_row_win(self, board_state: BoardState):
+        row_dict = {
+            label:row for label, row in zip("ABC", board_state.get_rows())
+        }
+        for label, row in row_dict.items():
+            if " " in row and row.count(self.symbol) == 2:
+                return label + str(row.index(" ") + 1)
+
+
     def get_diag_win(self, board_state: BoardState):
-        if current_diag.count(self.symbol) == 2:
-            return 
+        diagonals = zip(["ltr", "rtl"], board_state.get_diagonals())
+        for diag in diagonals:
+            if " " in diag[1] and diag[1].count(self.symbol) == 2:
+                open_space = diag[1].index(" ")
+                if open_space == 1:
+                    return "B2"
+                if diag[0] == "ltr":
+                    if open_space == 0:
+                        return "A1"
+                    if open_space == 2:
+                        return "C3"
+                else:
+                    if open_space == 0:
+                        return "A3"
+                    if open_space == 2:
+                        return "C1"
+
+
 
 
                 
