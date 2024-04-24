@@ -58,7 +58,8 @@ class BoardState:
         return columns
 
     def get_diagonals(self) -> list[list[str]]:
-        """ A 2D list showing the contents of the boards two diagonals. """
+        """ A 2D list showing the contents of the boards two diagonals.
+        Top left to bottom right diag is first item in returned list."""
         rows = self.get_rows()
         diags = [
                     [rows[i][i] for i in range(3)],

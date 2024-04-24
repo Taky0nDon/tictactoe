@@ -36,6 +36,14 @@ while not game_state.game_is_won() and not game_state.game_is_draw():
                 col.count(" ") == 1 for col in columns)
         diag_almost_won = any(diag.count(other_player.symbol) == 2 and\
             diag.count(" ") == 1 for diag in diagonals)
+        diag_win_opportunity = any(diag.count(current_player.symbol) == 2 and\
+            diag.count(" ") == 1 for diag in diagonals)
+        row_win_opportunity = any(row.count(current_player.symbol) == 2 and\
+                row.count(" ") == 1 for row in rows)
+        col_win_opportunity = any(col.count(current_player.symbol) == 2 and\
+                col.count(" ") == 1 for col in columns)
+
+
 
         booleans = [row_almost_won, column_almost_won, diag_almost_won, first_cpu_move]
         for bool in booleans:
@@ -44,6 +52,12 @@ while not game_state.game_is_won() and not game_state.game_is_draw():
         if first_cpu_move:
             move = current_player.first_move(game_state)
             first_cpu_move = False
+        elif diag_win_opportunity:
+            move = current_player.get_diag_win(game_state)
+        elif row_win_opportunity:
+            move = current_player.get_row_win(game_state)
+        elif col_win_opportunity:
+            move = current_player.get_col_win(game_state)
         elif diag_almost_won:
             move = current_player.block_diagonal_win(game_state)
         elif row_almost_won:
@@ -55,6 +69,7 @@ while not game_state.game_is_won() and not game_state.game_is_draw():
             move = choice(game_state.open_positions)
 
     assert(move is not None)
+    breakpoint()
     game_state.update_board_state(position=move, player=current_player)
 # TODO: manage open positions in the BoardState class
     game_state.open_positions.remove(move.upper())
