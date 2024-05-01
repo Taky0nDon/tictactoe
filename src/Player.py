@@ -22,7 +22,7 @@ class CPUOpponent(Player):
         return move
 
 
-    def block_column_win(self, board_state: BoardState):
+    def block_column_win(self, board_state: BoardState) -> str:
         opponent = [s for s in PLAYER_SYMBOLS if s != self.symbol][0]
         columns = board_state.get_columns()
         for col in columns:
@@ -31,9 +31,10 @@ class CPUOpponent(Player):
                 column = columns.index(col) + 1
                 move = row + str(column)
                 return move
+        return ""
 
 
-    def block_row_win(self, board_state: BoardState):
+    def block_row_win(self, board_state: BoardState) -> str:
         for label, row in zip('ABC', board_state.get_rows()):
             row_counts = { char:row.count(char) for char in row}
             if " " not in row_counts.keys():
@@ -43,8 +44,9 @@ class CPUOpponent(Player):
                 move = label + str(row.index(" ") + 1)
                 print(move)
                 return move
+        return ""
 
-    def block_diagonal_win(self, board_state: BoardState):
+    def block_diagonal_win(self, board_state: BoardState) -> str:
         diags = {
                 label: diag for label, diag in zip\
                         (("ABC", "CBA"), board_state.get_diagonals()) 
@@ -61,8 +63,9 @@ class CPUOpponent(Player):
                 open_row = diag[open_index]
                 blocking_move = open_row + desired_col
                 return blocking_move
+        return ""
 
-    def get_col_win(self, board_state: BoardState):
+    def get_col_win(self, board_state: BoardState) -> str:
         columns = board_state.get_columns()
         for col in columns:
             if col.count(' ') + col.count(self.symbol) == 3:
@@ -70,18 +73,20 @@ class CPUOpponent(Player):
                 column = columns.index(col) + 1
                 move = row + str(column)
                 return move
+        return ""
 
 
-    def get_row_win(self, board_state: BoardState):
+    def get_row_win(self, board_state: BoardState) -> str:
         row_dict = {
             label:row for label, row in zip("ABC", board_state.get_rows())
         }
         for label, row in row_dict.items():
             if " " in row and row.count(self.symbol) == 2:
                 return label + str(row.index(" ") + 1)
+        return ""
 
 
-    def get_diag_win(self, board_state: BoardState):
+    def get_diag_win(self, board_state: BoardState) -> str:
         diagonals = zip(["ltr", "rtl"], board_state.get_diagonals())
         for diag in diagonals:
             if " " in diag[1] and diag[1].count(self.symbol) == 2:
@@ -98,6 +103,7 @@ class CPUOpponent(Player):
                         return "A3"
                     if open_space == 2:
                         return "C1"
+        return ""
 
 
 
