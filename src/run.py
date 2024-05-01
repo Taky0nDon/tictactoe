@@ -16,14 +16,14 @@ DRAW = False
 first_cpu_move = True
 
 while not game_state.game_is_won() and not game_state.game_is_draw():
-    move = ""
+    move = str('')
     rows = game_state.get_rows()
     columns = game_state.get_columns()
     diagonals = game_state.get_diagonals()
     if not current_player.is_cpu:
         BoardMaker.make_board(game_state)
         print(f"{current_player.symbol}, it's your turn. Go!")
-        move = input("Enter the coordinates for your move: ")
+        move = input("Enter the coordinates for your move: ") or ""
         if not game_state.move_is_valid(move):
             print("Sorry, that move is not valid.")
             continue
@@ -68,8 +68,6 @@ while not game_state.game_is_won() and not game_state.game_is_draw():
         else:
             move = choice(game_state.open_positions)
 
-    assert(move is not None)
-    breakpoint()
     game_state.update_board_state(position=move, player=current_player)
 # TODO: manage open positions in the BoardState class
     game_state.open_positions.remove(move.upper())
